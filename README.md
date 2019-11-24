@@ -1,27 +1,30 @@
-# Gpg Wrapper
+# Metadata Anonymisation Tool Wrapper
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
-A *simple* encryption/decryption tool suitable for use as a contractor in elementaryos
-When installed on elementaryos, you will find that the context menu in Pantheon Files shows an extra entry
-"Encrypt (gpg)" when at least one file item has been selected. Clicking on this option results in each of the
-selected files being encrypted with the user's default gpg key and saved to a new file with `.gpg` add as an extension
-to the original file name.
+A *simple* way to remove metadata that may be a privacy concern from some file types using Pantheon Files.
+To work it is necessary to have the mat tool installed (sudo apt install mat). This package provides a suitable contractor
+file as well as changing the default action of mat.  When installed you will find that the context menu in
+Pantheon Files shows an extra entry when one or more file items has been selected. Clicking on this option results in
+a new files being created with the ".stripped" extension that have the same content as the selected files but with
+metadata removed. The advantage of this is that both files are then thumbnailed in Files and only one action is
+required to remove the stripped file.  The wrapper will not proceed if it detects that a file would be overwritten.
 
-If the selected files are *all* of the mime-type `application/pgp-encrypted` then another option "Decrypt (gpg)" also
-appears. Clicking on this option results in a dialog asking for the passphrase of the user's default gpg key.  Upon
-successful entry, the selected files are each decrypted and saved to a new file with `.decrypted` added as an extension
-to the original file name. Successful decryption requires that the files have been encrypted with the user's default
-gpg key.
+The functionality of this wrapper is limited by `mat` which is the tool in the Ubuntu Bionic repository. Bear in mind
+the warnings given in `mat` documentation regarding the extent of anonymisation, which is not 100% perfect.
 
-![Screenshot](/data/screenshots/Decrypt.png?raw=true "Encrypt and Decrypt context menu options")
+When elementaryos is rebased on a distibution that contains the later version of the tool `mat2` then this wrapper
+will be updated to use that.
+
+![Screenshot](/data/screenshots/Strip.png?raw=true "Strip metadata menu option")
 
 The tool can also be used from the command line:
+`com.github.jeremypw.mat-wrapper [FILES]`
 
-## To Encrypt
-`com.github.jeremypw.mat-wrapper -e [PATHS to files requiring encryption]`
+The flag "--no-rename" may be used to restore the native renaming of the `mat` tool. That is, after stripping, the
+original file is given a ".bak" extension and the stripped file takes the original file name.
 
-## To Decrypt
-`com.github.jeremypw.mat-wrapper -d [PATHS to gpg encrypted files]`
+For more functionality it is possible to run the `mat` tool directly or with the `mat-gui` app.
+Type `mat --help` at the command line for further information.
 
 ## Building from source
 
@@ -30,10 +33,12 @@ These dependencies must be present before building
  - `valac`
  - `meson`
  - `glib-2.0`
+ - `gtk+3.0`
+ - `granite`
 
  You can install these on a Ubuntu-based system by executing this command:
 
- `sudo apt install valac meson libglib2.0-dev`
+ `sudo apt install valac meson libgranite-dev`
 
 ### To build
 

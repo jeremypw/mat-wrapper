@@ -15,6 +15,14 @@ the warnings given in `mat` documentation regarding the extent of anonymisation,
 When elementaryos is rebased on a distibution that contains the later version of the tool `mat2` then this wrapper
 will be updated to use that.
 
+The contractor will be shown for these file types:
+* .png and .jpeg images
+* .odf and .docx documents
+* .tar, .gzip and .zip archive files
+* .mpeg, .mp2, .mp4, ,flac audio files
+* .torrent files
+
+
 ![Screenshot](/data/screenshots/Strip.png?raw=true "Strip metadata menu option")
 
 The tool can also be used from the command line:

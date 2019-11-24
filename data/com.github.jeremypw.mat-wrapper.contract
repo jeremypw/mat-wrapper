@@ -1,0 +1,5 @@
+[Contractor Entry]
+Name=Strip metadata (mat)
+Description=Create file stripped of metadata with mat tool
+MimeType=image/png;image/jpeg;application/vnd.oasis.opendocument.text;application/vnd.openxmlformats-officedocument.wordprocessingml.document;application/pdf;application/x-gzip;application/x-tar;application/zip;application/ogg;application/mpeg;application/mp2;application/mp4;application/flac;application/x-bittorrent;
+Exec=com.github.jeremypw.mat-wrapper %F

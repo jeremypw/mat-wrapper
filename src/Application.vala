@@ -89,8 +89,7 @@ can be obtained by running the mat tool at the command line or by launching the 
                     }
                 }
             } else {
-                /*TODO Give UI feedback regarding ignored files */
-                warning ("%s not valid for stripping", in_path);
+                break;
             }
         }
 
@@ -105,7 +104,6 @@ can be obtained by running the mat tool at the command line or by launching the 
             });
 
             release ();
-
         } else {
             release ();
         }
@@ -114,19 +112,35 @@ can be obtained by running the mat tool at the command line or by launching the 
     private bool valid_path_to_strip (string path) {
         /* Do not process files if it would create files that already exist or are the result of previous
          * stripping */
-        if (path.has_suffix (".suffix") ||
+        string primary_message = "";
+        string secondary_message = "";
+
+        if (path.has_suffix (".stripped") ||
             path.has_suffix (".bak")) {
 
-            return false;
+            primary_message = "Aborting - invalid extension for %s".printf (path);
+            secondary_message = "Files with the extensions '.stripped' or '.bak' will not be stripped";
         }
 
         var stripped_file = File.new_for_commandline_arg (path + ".stripped");
         if (stripped_file.query_exists ()) {
-            return false;
+            primary_message = "Aborting - file already stripped";
+            secondary_message = "A stripped file already exists for %s".printf (path);
         }
 
         var backup_file = File.new_for_commandline_arg (path + ".bak");
         if (backup_file.query_exists ()) {
+            primary_message = "Aborting - file already stripped";
+            secondary_message = "A backup file already exists for %s".printf (path);
+        }
+
+        if (primary_message != "") {
+            var dialog = new Granite.MessageDialog (primary_message,
+                                                    secondary_message,
+                                                    new ThemedIcon.from_names ({"dialog-error"}));
+
+            dialog.run ();
+            dialog.destroy ();
             return false;
         }
 
